@@ -133,9 +133,9 @@ export default function CreateAndEditGame({
 
   useEffect(() => {
     if (plataformOptions.length > 0 && game.plataformId === 0) {
-      setGame({ ...game, plataformId: plataformOptions[0].value });
+      setGame(g => ({ ...g, plataformId: plataformOptions[0].value }));
     }
-  }, [plataformOptions]);
+  }, [plataformOptions, game.plataformId]);
 
   useEffect(() => {
     if (plataformOptions.length > 0) {
@@ -151,52 +151,52 @@ export default function CreateAndEditGame({
         }
       }
     }
-  }, [game.plataforms]);
-
-  async function getAndSetGameData(id) {
-    const response = await api.get(`${GET_GAME_DATA}?id=${id}`);
-
-    const data = response.data;
-
-    if (data.success) {
-      if (data.message) {
-        showMessage(data.message, 'success');
-      }
-
-      const game = data.game;
-
-      setGame({
-        id: game.id,
-        categories: game.categories,
-        description: game.description,
-        developer: game.developer,
-        launchDate: new Date(Date.parse(game.launchDate)),
-        name: game.name,
-        plataforms: game.plataforms,
-        price: game.price,
-        publisher: game.publisher,
-        rating: game.rating,
-        requirements: game.requirements,
-        videos: game.videos
-      });
-
-      setThumbFilePreview(game.thumbnailLink);
-
-      setBgFilePreview(game.backgroundLink);
-
-      setLoaded(true);
-    } else {
-      showMessage(data.message, 'error');
-    }
-  }
+  }, [game.plataforms, plataformOptions]);
 
   useEffect(() => {
     if (url.includes('edit') && id && !loaded) {
       setIsCreate(false);
 
+      async function getAndSetGameData(id) {
+        const response = await api.get(`${GET_GAME_DATA}?id=${id}`);
+
+        const data = response.data;
+
+        if (data.success) {
+          if (data.message) {
+            showMessage(data.message, 'success');
+          }
+
+          const game = data.game;
+
+          setGame({
+            id: game.id,
+            categories: game.categories,
+            description: game.description,
+            developer: game.developer,
+            launchDate: new Date(Date.parse(game.launchDate)),
+            name: game.name,
+            plataforms: game.plataforms,
+            price: game.price,
+            publisher: game.publisher,
+            rating: game.rating,
+            requirements: game.requirements,
+            videos: game.videos
+          });
+
+          setThumbFilePreview(game.thumbnailLink);
+
+          setBgFilePreview(game.backgroundLink);
+
+          setLoaded(true);
+        } else {
+          showMessage(data.message, 'error');
+        }
+      }
+
       getAndSetGameData(id);
     }
-  }, []);
+  }, [url, id, loaded]);
 
   useEffect(() => {
     if (!game.backgroundImage && bgFilePreview !== null && !isCreate) {
@@ -206,7 +206,7 @@ export default function CreateAndEditGame({
     } else if (game.backgroundImage) {
       setBgFilePreview(URL.createObjectURL(game.backgroundImage));
     }
-  }, [game.backgroundImage]);
+  }, [game.backgroundImage, bgFilePreview, isCreate]);
 
   useEffect(() => {
     if (!game.thumbnail && thumbFilePreview !== null && !isCreate) {
@@ -216,7 +216,7 @@ export default function CreateAndEditGame({
     } else if (game.thumbnail) {
       setThumbFilePreview(URL.createObjectURL(game.thumbnail));
     }
-  }, [game.thumbnail]);
+  }, [game.thumbnail, thumbFilePreview, isCreate]);
 
   function AddVideo() {
     setGame({ ...game, videos: [...game.videos, currentLinkVideo] });
@@ -534,7 +534,12 @@ export default function CreateAndEditGame({
                 </span>
               </Tooltip>
               <div>
-                <img width="200px" className="img-fluid" src={bgFilePreview} />
+                <img
+                  width="200px"
+                  className="img-fluid"
+                  src={bgFilePreview}
+                  alt="bg-preview"
+                />
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-3 mb-3">
@@ -573,6 +578,7 @@ export default function CreateAndEditGame({
                   width="200px"
                   className="img-fluid"
                   src={thumbFilePreview}
+                  alt="thumbnail-preview"
                 />
               </div>
             </div>

@@ -24,7 +24,7 @@ export default function Carousel({ items }) {
 
     setItemsControl(newItems);
     setCurrentItem(newItems[0]);
-  }, []);
+  }, [items]);
 
   function handleBackClick() {
     setSlideImage({ in: false, direction: 'right' });
@@ -49,7 +49,7 @@ export default function Carousel({ items }) {
     setTimeout(() => {
       setSlideImage({ in: true, direction });
     }, 500);
-  }, [currentItem]);
+  }, [currentItem, slideImage.direction]);
 
   return (
     <div className="w-100 d-flex overflow-hidden">
@@ -78,7 +78,7 @@ export default function Carousel({ items }) {
                 title="video"
               />
             ) : (
-              <img src={currentItem.src} alt="image" />
+              <img src={currentItem.src} alt="" />
             ))}
         </div>
       </Slide>

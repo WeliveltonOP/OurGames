@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import logo from '../../assets/images/logo.png';
 
 import {
   IconButton,
+  Button,
   Menu,
   MenuItem,
   Divider,
-  Avatar,
-  TextField,
-  InputAdornment
+  Avatar
 } from '@material-ui/core';
 
-import { AccountCircle, Search } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { NavLink } from 'react-router-dom';
@@ -66,9 +64,9 @@ function Header({ user, signOut, isAdmin, isMaster }) {
 
   return (
     <nav className="navbar navbar-expand-md sticky-top menu-background elevation">
-      <a className="navbar-brand" href="#">
+      <NavLink className="navbar-brand" to="/" exact>
         <img src={logo} className="img-fluid" width="40" alt="logo" />
-      </a>
+      </NavLink>
 
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <ul className="navbar-nav">
@@ -188,20 +186,27 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           />
         </li> */}
         <li className="nav-item">
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-controls={menuId}
-            aria-haspopup="true"
-            onClick={handleProfileMenuOpen}
-            color="inherit"
-          >
-            {user ? (
+          {user ? (
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
               <Avatar src={user.photoURL} />
-            ) : (
-              <AccountCircle fontSize="large" style={{ color: '#f1f1f1' }} />
-            )}
-          </IconButton>
+              {/*) : (<AccountCircle fontSize="large" style={{ color: '#f1f1f1' }} /> )*/}
+            </IconButton>
+          ) : (
+            <Button
+              onClick={() => dispatch(push('/sign-in'))}
+              variant="text"
+              style={{ color: '#f1f1f1' }}
+            >
+              LOGIN
+            </Button>
+          )}
         </li>
         <li className="nav-item">
           <button

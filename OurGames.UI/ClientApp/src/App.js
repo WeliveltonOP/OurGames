@@ -66,7 +66,9 @@ class App extends Component {
     var form = new FormData();
 
     form.append('uid', uid);
+
     form.append('name', name);
+
     if (email) {
       form.append('email', email);
     }

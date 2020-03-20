@@ -4,9 +4,7 @@ import { connectRouter } from 'connected-react-router';
 
 const getNewReducer = history =>
   combineReducers({
-    ...Object.entries({
-      auth
-    }).reduce(
+    ...Object.entries({ auth }).reduce(
       (acc, [key, value]) => ({
         ...acc,
         [key]: value()

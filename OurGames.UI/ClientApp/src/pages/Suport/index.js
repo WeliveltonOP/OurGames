@@ -17,8 +17,6 @@ import {
 import { api } from '../../services';
 import { SUPORT_EMAIL } from '../../constants/urls';
 import SnackbarContentWrapper from '../../components/SnackbarContentWrapper';
-import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
 
 const initialAlertState = { message: '', variant: 'error', show: false };
 
@@ -29,8 +27,6 @@ export default function Suport() {
   const [descriptionHelperText, setDescriptionHelperText] = useState('0/500');
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState(initialAlertState);
-
-  const theme = useSelector(state => state.theme);
 
   function handleDescriptionChange(e) {
     return e.target.value.length <= 500
@@ -76,15 +72,9 @@ export default function Suport() {
 
   return (
     <>
-      {/* <Helmet>
-        <title>{theme.name} - Consulta</title>
-      </Helmet> */}
       <div className="card-container">
         <Paper square className="w-100 pt-3">
           <ValidatorForm onSubmit={submitForm}>
-            {/* <div className="row justify-content-center my-3">
-              <Typography>Entre em contato</Typography>
-            </div> */}
             <div className="row px-3">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>

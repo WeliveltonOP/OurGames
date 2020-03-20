@@ -11,7 +11,7 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import { Info, VpnKey, SaveAlt } from '@material-ui/icons';
+import { VpnKey, SaveAlt } from '@material-ui/icons';
 
 import beyondLogo from '../../assets/images/games/Beyond_Logo-960x384-a2c6b28b3e69ca323c30612098e1d5a8.png';
 import mintLogo from '../../assets/images/games/EGS_DEVOLVER_MINIT_IC1_game_logo_white-836x300-b739c4e7e9c9f802bcc400ac58f16c5b.png';

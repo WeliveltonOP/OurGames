@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import MaterialTable from 'material-table';
 import { TABLE_LOCALIZATION } from '../../constants/material-table-defs';
 import { push } from 'connected-react-router';
@@ -16,6 +16,22 @@ export default function Games() {
   const tableRef = useRef();
   const dispatch = useDispatch();
   const [alertMessage, setAlertMessage] = useState(initialAlertMessageState);
+
+  const changeGameStatus = useCallback(async id => {
+    const response = await api.get(`${CHANGE_GAME_STATUS}?gameId=${id}`);
+
+    const data = response.data;
+
+    if (data.success) {
+      if (data.message) {
+        showMessage(data.message, 'success');
+      }
+
+      reloadTable();
+    } else {
+      showMessage(data.message, 'error');
+    }
+  }, []);
 
   useEffect(() => {
     const activeIndex = GAME_COLUMNS.findIndex(g => g.field === 'active');
@@ -36,7 +52,7 @@ export default function Games() {
           </IconButton>
         </Tooltip>
       );
-  }, []);
+  }, [changeGameStatus]);
 
   function reloadTable() {
     tableRef.current && tableRef.current.onQueryChange();
@@ -51,22 +67,6 @@ export default function Games() {
 
   function showMessage(message, variant) {
     setAlertMessage({ message, show: true, variant });
-  }
-
-  async function changeGameStatus(id) {
-    const response = await api.get(`${CHANGE_GAME_STATUS}?gameId=${id}`);
-
-    const data = response.data;
-
-    if (data.success) {
-      if (data.message) {
-        showMessage(data.message, 'success');
-      }
-
-      reloadTable();
-    } else {
-      showMessage(data.message, 'error');
-    }
   }
 
   function getData(q) {

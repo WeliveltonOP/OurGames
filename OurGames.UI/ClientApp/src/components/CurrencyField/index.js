@@ -58,7 +58,7 @@ class CurrencyField extends Component {
 
     if (result.length < minChars) {
       const numbers = minChars - result.length;
-      const leftZeroPad = new String(0).repeat(numbers);
+      const leftZeroPad = '0'.repeat(numbers);
       result = `${leftZeroPad}${result}`;
     }
 

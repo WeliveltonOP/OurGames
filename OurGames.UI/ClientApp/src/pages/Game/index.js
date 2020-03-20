@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Typography,
   Divider,
@@ -16,6 +16,7 @@ import { formatRawValue } from '../../utils/funcs';
 import SnackbarContentWrapper from '../../components/SnackbarContentWrapper';
 import format from 'date-fns/format';
 import ptBr from 'date-fns/locale/pt-BR';
+import { Helmet } from 'react-helmet';
 
 const initialAlertMessageState = { message: '', variant: 'error', show: false };
 
@@ -30,7 +31,7 @@ export default function Game({
   const [alertMessage, setAlertMessage] = useState(initialAlertMessageState);
   const { user } = useSelector(s => s.auth);
 
-  async function getAndSetGameData(id) {
+  const getAndSetGameData = useCallback(async id => {
     const response = await api.get(`${GET_GAME_DATA}?id=${id}`);
 
     const data = response.data;
@@ -57,7 +58,7 @@ export default function Game({
 
       setError(true);
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -65,7 +66,7 @@ export default function Game({
     } else {
       dispatch(push('/'));
     }
-  }, []);
+  }, [dispatch, getAndSetGameData, id]);
 
   async function Checkout() {
     if (!user) {
@@ -99,6 +100,12 @@ export default function Game({
     <div className="w-100 my-3 p-3 justify-content-center d-flex flex-column">
       {game ? (
         <>
+          <Helmet>
+            <title>{`OurGames - ${game.name}`}</title>
+          </Helmet>
+
+          <div style={{ backgroundColor: '#333' }}>hh</div>
+
           <Carousel items={game.videos.map(v => ({ type: 'video', src: v }))} />
 
           <Divider className="my-4" />

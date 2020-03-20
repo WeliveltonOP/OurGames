@@ -13,6 +13,7 @@ import {
 } from './pages';
 import Layout from './components/Layout';
 import { isLoggedd, isAdmin, isMaster } from './App';
+import { Helmet } from 'react-helmet';
 
 //Common Routes
 /**
@@ -44,13 +45,23 @@ import { isLoggedd, isAdmin, isMaster } from './App';
  * /master/admins
  */
 
-const renderRoute = (Page, withLayout = true) => props =>
+const renderRoute = (Page, title, withLayout = true) => props =>
   withLayout ? (
     <Layout>
+      {title && (
+        <Helmet>
+          <title>OurGames - {title}</title>
+        </Helmet>
+      )}
       <Page {...props} />
     </Layout>
   ) : (
-    <Page {...props} />
+    <>
+      <Helmet>
+        <title>OurGames {title && ` - ${title}`}</title>
+      </Helmet>
+      <Page {...props} />
+    </>
   );
 
 const PrivateRoute = ({ adminOlny, masterOnly, ...props }) => {
@@ -77,32 +88,44 @@ const PrivateRoute = ({ adminOlny, masterOnly, ...props }) => {
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" render={renderRoute(Home)} />
-    <Route exact path="/store/:plataform" render={renderRoute(Home)} />
-    <Route exact path="/sign-in" render={renderRoute(SignIn, false)} />
-    <Route exact path="/sign-up" render={renderRoute(SignUp, false)} />
-    <Route exact path="/suport" render={renderRoute(Suport)} />
-    <Route exact path="/game/:id" render={renderRoute(Game)} />
-    <PrivateRoute exact path="/library" render={renderRoute(Library)} />
+    <Route exact path="/" render={renderRoute(Home, 'loja')} />
+    <Route exact path="/store/:plataform" render={renderRoute(Home, 'loja')} />
+    <Route
+      exact
+      path="/sign-in"
+      render={renderRoute(SignIn, 'entrar', false)}
+    />
+    <Route
+      exact
+      path="/sign-up"
+      render={renderRoute(SignUp, 'cadastrar-se', false)}
+    />
+    <Route exact path="/suport" render={renderRoute(Suport, 'suporte')} />
+    <Route exact path="/game/:id" render={renderRoute(Game, null)} />
+    <PrivateRoute
+      exact
+      path="/library"
+      render={renderRoute(Library, 'biblioteca')}
+    />
 
     {/*ADMIN PAGES*/}
     <PrivateRoute
       exact
       adminOlny
       path="/admin/games"
-      render={renderRoute(Games)}
+      render={renderRoute(Games, 'jogos')}
     />
     <PrivateRoute
       exact
       adminOlny
       path="/admin/games/new"
-      render={renderRoute(CreateAndEditGame)}
+      render={renderRoute(CreateAndEditGame, 'novo jogo')}
     />
     <PrivateRoute
       exact
       adminOlny
       path="/admin/games/edit/:id"
-      render={renderRoute(CreateAndEditGame)}
+      render={renderRoute(CreateAndEditGame, 'editar jogo')}
     />
 
     {/* MASTER PAGES */}
@@ -110,7 +133,7 @@ const Routes = () => (
       exact
       masterOnly
       path="/master/admins"
-      render={renderRoute(Admins)}
+      render={renderRoute(Admins, 'admins')}
     />
     <Route
       render={function() {

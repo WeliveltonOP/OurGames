@@ -36,6 +36,7 @@ export default function GamesListItem({
             left: '50%',
             transform: 'translate(-50%, -50%)'
           }}
+          alt={name + '-thumbnail'}
         />
       </div>
       <div className="details p-2">

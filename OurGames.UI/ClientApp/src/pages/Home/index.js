@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import GamesList from '../../components/GamesList';
 import Sidebar from '../../components/Sidebar';
 import { api } from '../../services';
@@ -20,7 +20,6 @@ export default function Home({
   const [loaded, setLoaded] = useState(false);
   const [alertMessage, setAlertMessage] = useState(initialAlertMessageState);
   const [categories, setCategories] = useState([]);
-  const [bgColor, setBgColor] = useState('');
   const [categorySelected, setCategorySelected] = useState(0);
 
   function handleMessageClose(_, reason) {
@@ -34,39 +33,36 @@ export default function Home({
     setAlertMessage({ message, show: true, variant });
   }
 
-  async function loadGames(categoryId) {
-    setLoaded(false);
+  const loadGames = useCallback(
+    async categoryId => {
+      setLoaded(false);
 
-    if (categoryId) {
-      setCategorySelected(categoryId);
-    } else {
-      setCategorySelected(0);
-    }
+      if (categoryId) {
+        setCategorySelected(categoryId);
+      } else {
+        setCategorySelected(0);
+      }
 
-    const response = await api.get(
-      `${GET_GAMES}?categoryId=${categoryId}&plataform=${plataform || ''}`
-    );
+      const response = await api.get(
+        `${GET_GAMES}?categoryId=${categoryId}&plataform=${plataform || ''}`
+      );
 
-    const data = response.data;
+      const data = response.data;
 
-    if (data.success) {
-      setGames(data.games);
-    } else {
-      showMessage(data.message, 'error');
-    }
+      if (data.success) {
+        setGames(data.games);
+      } else {
+        showMessage(data.message, 'error');
+      }
 
-    setLoaded(true);
-  }
+      setLoaded(true);
+    },
+    [plataform]
+  );
 
   useEffect(() => {
-    // if (plataform) {
-    //   setBgColor(`bg-${plataform}`);
-    // } else {
-    //   setBgColor('');
-    // }
-
     loadGames(categorySelected !== 0 ? categorySelected : undefined);
-  }, [plataform]);
+  }, [plataform, loadGames, categorySelected]);
 
   useEffect(() => {
     loadGames().catch(error => console.error(error));
@@ -82,12 +78,12 @@ export default function Home({
     }
 
     getCreateEditPageDefaultState();
-  }, []);
+  }, [loadGames]);
 
   return (
     <>
       {loaded ? (
-        <div className={`w-100 ${bgColor}`}>
+        <div className="w-100">
           <Sidebar
             onOptionCick={loadGames}
             items={categories}
@@ -101,9 +97,7 @@ export default function Home({
               className="games-list"
             />
           ) : (
-            <div
-              className={`d-flex h-100 justify-content-center align-content-center ${bgColor}`}
-            >
+            <div className="d-flex h-100 justify-content-center align-content-center">
               <Typography
                 className="d-flex align-items-center"
                 component="h6"
