@@ -12,6 +12,7 @@ using OurGames.UI.Models;
 using OurGames.UI.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace OurGames.UI.Controllers
 {
@@ -25,6 +26,8 @@ namespace OurGames.UI.Controllers
 
         private readonly PlataformRepository _plataformRepo;
 
+        private readonly CustomerFavoriteRepository _customerFavorite;
+
         private readonly string _mediaPrefix = "/static/media/";
 
         private readonly string _mediasPath;
@@ -36,6 +39,8 @@ namespace OurGames.UI.Controllers
             _categoryRepo = new CategoryRepository(dbContextOptions);
 
             _plataformRepo = new PlataformRepository(dbContextOptions);
+
+            _customerFavorite = new CustomerFavoriteRepository(dbContextOptions);
 
             _mediasPath = Path.Combine(env.WebRootPath, "static\\media");
         }
@@ -154,16 +159,16 @@ namespace OurGames.UI.Controllers
         {
             try
             {
-                var oGame = _gameRepo.GetByKey(model.Id);
+                var game = _gameRepo.GetByKey(model.Id);
 
-                if (oGame is null)
+                if (game is null)
                 {
                     return Json(new { message = "Desculpe, ocorreu um erro ao executar está ação.", success = false });
                 }
 
-                var bgPath = oGame.BackgroundLink;
+                var bgPath = game.BackgroundLink;
 
-                var thumbPath = oGame.ThumbnailLink;
+                var thumbPath = game.ThumbnailLink;
 
                 if (model.BackgroundImage != null)
                 {
@@ -190,9 +195,9 @@ namespace OurGames.UI.Controllers
 
                 if (model.Thumbnail != null)
                 {
-                    var thumbFilenameLatDot = model.Thumbnail.FileName.LastIndexOf('.');
+                    var thumbFilenameLastDot = model.Thumbnail.FileName.LastIndexOf('.');
 
-                    var thumbFilename = model.Thumbnail.FileName.Insert(thumbFilenameLatDot - 1, Guid.NewGuid().ToString());
+                    var thumbFilename = model.Thumbnail.FileName.Insert(thumbFilenameLastDot - 1, Guid.NewGuid().ToString());
 
                     thumbPath = Path.Combine(_mediasPath, thumbFilename);
 
@@ -213,35 +218,35 @@ namespace OurGames.UI.Controllers
                 }
 
 
-                oGame.Active = model.Active;
+                game.Active = model.Active;
 
-                oGame.CategoryGame = model.Categories.Select(c => new CategoryGame { CategoryId = c }).ToList();
+                game.CategoryGame = model.Categories.Select(c => new CategoryGame { CategoryId = c }).ToList();
 
-                oGame.Description = model.Description;
+                game.Description = model.Description;
 
-                oGame.Developer = model.Developer;
+                game.Developer = model.Developer;
 
-                oGame.LaunchDate = model.LaunchDate;
+                game.LaunchDate = model.LaunchDate;
 
-                oGame.Media = model.Videos.Select(v => new Media { Link = v, Type = "video", GameId = model.Id }).ToList();
+                game.Media = model.Videos.Select(v => new Media { Link = v, Type = "video", GameId = model.Id }).ToList();
 
-                oGame.Price = model.Price;
+                game.Price = model.Price;
 
-                oGame.Name = model.Name;
+                game.Name = model.Name;
 
-                oGame.Publisher = model.Publisher;
+                game.Publisher = model.Publisher;
 
-                oGame.Rating = model.Rating;
+                game.Rating = model.Rating;
 
-                oGame.PlataformGame = model.Plataforms.Select(p => new PlataformGame { PlataformId = p }).ToList();
+                game.PlataformGame = model.Plataforms.Select(p => new PlataformGame { PlataformId = p }).ToList();
 
-                oGame.Requirements = model.Requirements;
+                game.Requirements = model.Requirements;
 
-                oGame.ThumbnailLink = thumbPath;
+                game.ThumbnailLink = thumbPath;
 
-                oGame.BackgroundLink = bgPath;
+                game.BackgroundLink = bgPath;
 
-                _gameRepo.Update(oGame);
+                _gameRepo.Update(game);
 
                 return Json(new { message = "Jogo editado com sucesso.", success = true });
             }
@@ -276,7 +281,7 @@ namespace OurGames.UI.Controllers
         {
             try
             {
-                if(skip.HasValue && take.HasValue)
+                if (skip.HasValue && take.HasValue)
                 {
                     var (games, totalCount) = _gameRepo.GetPage(skip.Value, take.Value, search);
 
@@ -309,11 +314,11 @@ namespace OurGames.UI.Controllers
 
                     if (categoryId.HasValue)
                     {
-                        games = _gameRepo.GetAll().Where(g => g.Active && g.CategoryGame.Select(c=>c.CategoryId).Contains(categoryId.Value));
+                        games = _gameRepo.GetAll().Where(g => g.Active && g.CategoryGame.Select(c => c.CategoryId).Contains(categoryId.Value));
                     }
                     else
                     {
-                        games =_gameRepo.GetAll().Where(g => g.Active);
+                        games = _gameRepo.GetAll().Where(g => g.Active);
                     }
                     if (!string.IsNullOrEmpty(plataform))
                     {
@@ -344,7 +349,7 @@ namespace OurGames.UI.Controllers
 
                     return Json(new { games = viewModel, success = true });
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -370,6 +375,57 @@ namespace OurGames.UI.Controllers
                 Log.Error("Error while getting default state for page Create/Edit game.", ex);
 
                 return Json(new { message = "Desculpe, não foi possível carregar essa página.", success = false });
+            }
+        }
+
+        [HttpGet("[action]")]
+        public JsonResult ChangeGameFavoriteStatus(int? gameId, string userProviderId)
+        {
+            if (!gameId.HasValue && string.IsNullOrEmpty(userProviderId))
+            {
+                return Json(new { message = "Não foi possível completar esta ação!", success = false });
+            }
+
+            try
+            {
+                var added = _customerFavorite.ChangeGameFavoriteStatus(gameId.Value, userProviderId);
+
+                if (added)
+                {
+                    return Json(new { message = "O jogo foi adicionado a sua lista de favoritos!", success = true });
+                }
+
+                return Json(new { message = "O jogo foi removido da sua lista de favoritos!", success = true });
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error while changing game favorite status.", ex);
+
+                return Json(new { message = "Desculpe, ocorreu um erro inesperado!", success = false });
+            }
+        }
+
+        [HttpGet("[action]")]
+        public JsonResult GetFavoriteGames(string userProviderId)
+        {
+            try
+            {
+                var favoriteGames = _customerFavorite.GetFavoriteGames(userProviderId);
+
+                return Json(new { games = favoriteGames, success = true }, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error while get favorite games.", ex);
+
+                return Json(new { message = "Não foi possível carregar a lista de favoritos", success = false },
+                     new JsonSerializerSettings
+                     {
+                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                     });
             }
         }
     }

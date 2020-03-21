@@ -72,7 +72,7 @@ export default function Suport() {
 
   return (
     <>
-      <div className="card-container">
+      <div className="card-container px-3">
         <Paper square className="w-100 pt-3">
           <ValidatorForm onSubmit={submitForm}>
             <div className="row px-3">

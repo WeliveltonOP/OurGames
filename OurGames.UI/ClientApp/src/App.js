@@ -17,6 +17,7 @@ import firebaseConfig from './constants/firebase-config';
 import { setUser, setFirebaseOptions, setAccess } from './store/actions/auth';
 import { api } from './services';
 import { ADD_OR_UPDATE_USER, GET_ACCESS } from './constants/urls';
+import { CssBaseline } from '@material-ui/core';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
@@ -101,6 +102,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        <CssBaseline />
         <ConnectedRouter history={history}>
           <Routes />
         </ConnectedRouter>

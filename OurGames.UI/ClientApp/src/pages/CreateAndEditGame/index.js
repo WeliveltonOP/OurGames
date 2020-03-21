@@ -135,7 +135,7 @@ export default function CreateAndEditGame({
     if (plataformOptions.length > 0 && game.plataformId === 0) {
       setGame(g => ({ ...g, plataformId: plataformOptions[0].value }));
     }
-  }, [plataformOptions, game.plataformId]);
+  }, [plataformOptions]);
 
   useEffect(() => {
     if (plataformOptions.length > 0) {
@@ -206,7 +206,7 @@ export default function CreateAndEditGame({
     } else if (game.backgroundImage) {
       setBgFilePreview(URL.createObjectURL(game.backgroundImage));
     }
-  }, [game.backgroundImage, bgFilePreview, isCreate]);
+  }, [game.backgroundImage, isCreate]);
 
   useEffect(() => {
     if (!game.thumbnail && thumbFilePreview !== null && !isCreate) {
@@ -216,7 +216,7 @@ export default function CreateAndEditGame({
     } else if (game.thumbnail) {
       setThumbFilePreview(URL.createObjectURL(game.thumbnail));
     }
-  }, [game.thumbnail, thumbFilePreview, isCreate]);
+  }, [game.thumbnail, isCreate]);
 
   function AddVideo() {
     setGame({ ...game, videos: [...game.videos, currentLinkVideo] });
@@ -269,7 +269,7 @@ export default function CreateAndEditGame({
 
   return (
     <Paper
-      className="w-100 my-4 p-4 h-100"
+      className="w-100 my-4 p-4 h-100 mx-3"
       style={{
         flex: 1
       }}
@@ -534,12 +534,14 @@ export default function CreateAndEditGame({
                 </span>
               </Tooltip>
               <div>
-                <img
-                  width="200px"
-                  className="img-fluid"
-                  src={bgFilePreview}
-                  alt="bg-preview"
-                />
+                {bgFilePreview && (
+                  <img
+                    width="200px"
+                    className="img-fluid"
+                    src={bgFilePreview}
+                    alt="bg-preview"
+                  />
+                )}
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-3 mb-3">
@@ -574,12 +576,14 @@ export default function CreateAndEditGame({
                 </span>
               </Tooltip>
               <div>
-                <img
-                  width="200px"
-                  className="img-fluid"
-                  src={thumbFilePreview}
-                  alt="thumbnail-preview"
-                />
+                {thumbFilePreview && (
+                  <img
+                    width="200px"
+                    className="img-fluid"
+                    src={thumbFilePreview}
+                    alt="thumbnail-preview"
+                  />
+                )}
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-6 mb-3">

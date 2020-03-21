@@ -6,8 +6,6 @@ export default function Carousel({ items }) {
   const [itemsControl, setItemsControl] = useState([]);
   const [currentItem, setCurrentItem] = useState(null);
   const [slideImage, setSlideImage] = useState({ in: true, direction: 'left' });
-  //   const [turnImage, setTurnImage] = useState(true);
-  //   const [direction, setDirection] = useState('left');
 
   useEffect(() => {
     const newItems = [];
@@ -43,24 +41,16 @@ export default function Carousel({ items }) {
   }
 
   useEffect(() => {
-    // setDirection(direction === 'left' ? 'right' : 'left');
     const direction = slideImage.direction === 'left' ? 'right' : 'left';
 
     setTimeout(() => {
       setSlideImage({ in: true, direction });
     }, 500);
-  }, [currentItem, slideImage.direction]);
+  }, [currentItem]);
 
   return (
     <div className="w-100 d-flex overflow-hidden">
-      <Button
-        onClick={handleBackClick}
-        style={{
-          zIndex: 10,
-          backgroundColor: '#fff',
-          '&:hover': { backgroundColor: '#fff' }
-        }}
-      >
+      <Button onClick={handleBackClick} className="carousel-controls">
         <ArrowBackIos />
       </Button>
 
@@ -82,14 +72,7 @@ export default function Carousel({ items }) {
             ))}
         </div>
       </Slide>
-      <Button
-        onClick={handleNextClick}
-        style={{
-          zIndex: 10,
-          backgroundColor: '#fff',
-          '&:hover': { backgroundColor: '#fff' }
-        }}
-      >
+      <Button onClick={handleNextClick} className="carousel-controls">
         <ArrowForwardIos />
       </Button>
     </div>

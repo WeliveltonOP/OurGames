@@ -7,7 +7,7 @@ export default class Layout extends Component {
     return (
       <>
         <Header />
-        <main className="px-3 h-auto">{this.props.children}</main>
+        <main className="h-auto">{this.props.children}</main>
         <Footer />
       </>
     );

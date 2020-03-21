@@ -52,8 +52,8 @@ export default function Library() {
               primary="Beyond: Two Souls"
               className="ml-4"
               secondary={
-                <React.Fragment>
-                  <div>
+                <>
+                  <>
                     {'Data da compra: '}
                     <Typography
                       component="span"
@@ -63,8 +63,8 @@ export default function Library() {
                     >
                       25/09/2019 12:44:56
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Preço: '}
                     <Typography
                       component="span"
@@ -74,8 +74,8 @@ export default function Library() {
                     >
                       R$ 45,99
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Plataforma: '}
                     <Typography
                       component="span"
@@ -85,8 +85,8 @@ export default function Library() {
                     >
                       PS4
                     </Typography>
-                  </div>
-                </React.Fragment>
+                  </>
+                </>
               }
             />
             <ListItemSecondaryAction>
@@ -108,8 +108,8 @@ export default function Library() {
               primary="Minit"
               className="ml-4"
               secondary={
-                <React.Fragment>
-                  <div>
+                <>
+                  <>
                     {'Data da compra: '}
                     <Typography
                       component="span"
@@ -119,8 +119,8 @@ export default function Library() {
                     >
                       28/09/2019 12:47:56
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Preço: '}
                     <Typography
                       component="span"
@@ -130,8 +130,8 @@ export default function Library() {
                     >
                       R$ 14,99
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Plataforma: '}
                     <Typography
                       component="span"
@@ -141,8 +141,8 @@ export default function Library() {
                     >
                       PC
                     </Typography>
-                  </div>
-                </React.Fragment>
+                  </>
+                </>
               }
             />
             <ListItemSecondaryAction>
@@ -164,8 +164,8 @@ export default function Library() {
               primary="Everything"
               className="ml-4"
               secondary={
-                <React.Fragment>
-                  <div>
+                <>
+                  <>
                     {'Data da compra: '}
                     <Typography
                       component="span"
@@ -175,8 +175,8 @@ export default function Library() {
                     >
                       30/09/2019 12:00:54
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Preço: '}
                     <Typography
                       component="span"
@@ -186,8 +186,8 @@ export default function Library() {
                     >
                       R$ 14,99
                     </Typography>
-                  </div>
-                  <div>
+                  </>
+                  <>
                     {'Plataforma: '}
                     <Typography
                       component="span"
@@ -197,8 +197,8 @@ export default function Library() {
                     >
                       PC
                     </Typography>
-                  </div>
-                </React.Fragment>
+                  </>
+                </>
               }
             />
             <ListItemSecondaryAction>

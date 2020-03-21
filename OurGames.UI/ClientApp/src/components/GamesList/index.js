@@ -15,6 +15,7 @@ export default function GamesList({ items, onFavorite, ...props }) {
           developer={item.developer}
           src={item.backgroundLink}
           thumbnail={item.thumbnailLink}
+          isFavorite={item.isFavorite}
           price={formatRawValue(item.price, 'R$')}
           onFavorite={e => {
             e.stopPropagation();

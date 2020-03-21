@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Paper, Typography, Divider, Tooltip, Button } from '@material-ui/core';
 
-import { FavoriteBorderOutlined } from '@material-ui/icons';
+import { FavoriteBorderOutlined, FavoriteOutlined } from '@material-ui/icons';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 
@@ -14,6 +14,7 @@ export default function GamesListItem({
   price,
   message,
   thumbnail,
+  isFavorite,
   onFavorite,
   ...rest
 }) {
@@ -66,14 +67,41 @@ export default function GamesListItem({
         <div className="row mt-3">
           <div className="col-12 d-flex justify-content-between">
             <div className="cardActions">
-              <Tooltip title="Adicionar na lista de desejos">
-                <Button size="small" onClick={onFavorite}>
-                  <FavoriteBorderOutlined fontSize="small" />
-                </Button>
-              </Tooltip>
+              {!isFavorite ? (
+                <Tooltip title="Adicionar na lista de desejos">
+                  <Button
+                    size="small"
+                    onClick={onFavorite}
+                    style={{ outline: 'none' }}
+                  >
+                    <FavoriteBorderOutlined
+                      fontSize="small"
+                      className="favorite-icon"
+                    />
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Remover da lista de desejos">
+                  <Button
+                    size="small"
+                    onClick={onFavorite}
+                    style={{ outline: 'none' }}
+                  >
+                    <FavoriteOutlined
+                      fontSize="small"
+                      htmlColor="red"
+                      className="favorite-icon favorited"
+                    />
+                  </Button>
+                </Tooltip>
+              )}
             </div>
 
-            <Typography variant="subtitle2" component="span">
+            <Typography
+              style={{ fontSize: '17px' }}
+              variant="subtitle2"
+              component="span"
+            >
               {price}
             </Typography>
           </div>

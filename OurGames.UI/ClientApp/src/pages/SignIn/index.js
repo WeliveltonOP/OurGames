@@ -35,12 +35,16 @@ function Copyright() {
   );
 }
 
+//https://cdn3.f-cdn.com/contestentries/1489974/18545046/5cba2aba229c4_thumb900.jpg
+//https://www.geeksnews.com.mx/wp-content/uploads/2019/07/wp22761521.jpg
+//https://wallpaperaccess.com/full/280232.jpg
+
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh'
   },
   image: {
-    backgroundImage: `url(https://cdn3.f-cdn.com/contestentries/1489974/18545046/5cba2aba229c4_thumb900.jpg)`,
+    backgroundImage: `url(https://wallpaperaccess.com/full/280232.jpg)`,
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.grey[50],
     backgroundSize: 'cover',

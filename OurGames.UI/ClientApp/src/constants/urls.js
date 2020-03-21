@@ -22,3 +22,7 @@ export const CHECKOUT = '/store/Checkout';
 // export const CHANGE_GAME_STATUS = '/game/ChangeGameStatus';
 
 export const SUPORT_EMAIL = '/store/suport';
+
+export const CHANGE_GAME_FAVORITE_STATUS = '/game/ChangeGameFavoriteStatus';
+
+export const GET_FAVORITE_GAME = '/game/GetFavoriteGames';

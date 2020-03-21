@@ -73,7 +73,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               exact
               to="/"
             >
@@ -83,7 +83,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               to="/library"
             >
               Biblioteca
@@ -92,7 +92,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               to="/store/pc"
             >
               PC
@@ -101,7 +101,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               to="/store/ps4"
             >
               PS4
@@ -110,7 +110,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               to="/store/xbox"
             >
               Xbox
@@ -119,7 +119,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
           <li className="nav-item">
             <NavLink
               activeClassName="hvr-underline-active"
-              className="nav-link hvr-underline-from-left"
+              className="nav-link hvr-underline-from-left w-100"
               to="/suport"
             >
               Suporte
@@ -136,7 +136,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
               <li className="nav-item">
                 <NavLink
                   activeClassName="hvr-underline-active"
-                  className="nav-link hvr-underline-from-left"
+                  className="nav-link hvr-underline-from-left w-100"
                   exact
                   to="/admin/games"
                 >
@@ -149,7 +149,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
             <li className="nav-item">
               <NavLink
                 activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left"
+                className="nav-link hvr-underline-from-left w-100"
                 to="/master/admins"
               >
                 Admins
