@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import Routes from './routes';
 import { ConnectedRouter, push } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import configureStore from './store';
-// import { ThemeProvider } from '@material-ui/styles';
-// import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/app.css';
@@ -18,6 +18,7 @@ import { setUser, setFirebaseOptions, setAccess } from './store/actions/auth';
 import { api } from './services';
 import { ADD_OR_UPDATE_USER, GET_ACCESS } from './constants/urls';
 import { CssBaseline } from '@material-ui/core';
+import { takeIfExists } from './utils/localStorage';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 
@@ -34,9 +35,35 @@ const providers = {
   facebookProvider: new firebase.auth.FacebookAuthProvider()
 };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#939ADB' },
+    type: takeIfExists('theme') || 'dark'
+  }
+});
+
+function App(props) {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    async function firebaseAuthState() {
+      setLoaded(true);
+
+      if (props.user) {
+        await addOrUpdateUser(
+          props.user.uid,
+          props.user.displayName,
+          props.user.email
+        );
+
+        const id = await getAccess(props.user.uid);
+
+        store.dispatch(setAccess(id));
+
+        // Saporra não pode ficar aqui
+        store.dispatch(push('/'));
+      }
+    }
 
     store.dispatch(
       setFirebaseOptions({
@@ -45,25 +72,12 @@ class App extends Component {
       })
     );
 
-    const self = this;
+    store.dispatch(setUser(props.user));
 
-    firebaseAppAuth.onAuthStateChanged(function(user) {
-      store.dispatch(setUser(user));
+    firebaseAuthState();
+  }, [props]);
 
-      if (user) {
-        self
-          .addOrUpdateUser(user.uid, user.displayName, user.email)
-          .then(_ =>
-            self.getAccess(user.uid).then(id => store.dispatch(setAccess(id)))
-          );
-
-        store.dispatch(push('/'));
-        // firebaseAppAuth.currentUser.getIdToken().then(t => configureAxios(t));
-      }
-    });
-  }
-
-  async addOrUpdateUser(uid, name, email) {
+  async function addOrUpdateUser(uid, name, email) {
     var form = new FormData();
 
     form.append('uid', uid);
@@ -83,7 +97,7 @@ class App extends Component {
     }
   }
 
-  async getAccess(uid) {
+  async function getAccess(uid) {
     const response = await api.get(`${GET_ACCESS}?uid=${uid}`);
 
     const data = response.data;
@@ -99,16 +113,22 @@ class App extends Component {
     return 1;
   }
 
-  render() {
-    return (
-      <Provider store={store}>
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <ConnectedRouter history={history}>
-          <Routes />
+          {loaded ? (
+            <Routes />
+          ) : (
+            <div className="sc-center ">
+              <progress className="pure-material-progress-circular"></progress>
+            </div>
+          )}
         </ConnectedRouter>
-      </Provider>
-    );
-  }
+      </ThemeProvider>
+    </Provider>
+  );
 }
 
 export default withFirebaseAuth({
@@ -130,26 +150,3 @@ export function isAdmin() {
 export function isMaster() {
   return store.getState().auth.isMaster;
 }
-
-// function configureAxios(accessToken) {
-//   console.log(accessToken);
-//   Axios.interceptors.request.use(
-//     async config => {
-//       let serverCallUrl = new URL(config.url);
-
-//       if (serverCallUrl.pathname.includes('/sign')) return config;
-
-//       if (accessToken) {
-//         config.headers['authorization'] = `Bearer ${accessToken}`;
-//         config.headers['cache-control'] = `no-cache`;
-//       }
-
-//       return config;
-//       // or throw new Error('User required')
-//     },
-//     // I don't think this function is required
-//     function(error) {
-//       return Promise.reject(error);
-//     }
-//   );
-// }

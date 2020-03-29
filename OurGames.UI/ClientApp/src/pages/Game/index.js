@@ -34,42 +34,34 @@ export default function Game({
   const [alertMessage, setAlertMessage] = useState(initialAlertMessageState);
   const { user } = useSelector(s => s.auth);
 
-  const createCancelToken = () => axios.CancelToken.source();
-  const cancelToken = createCancelToken();
+  const getAndSetGameData = useCallback(async id => {
+    const response = await api.get(`${GET_GAME_DATA}?id=${id}`);
 
-  const getAndSetGameData = useCallback(
-    async id => {
-      const response = await api.get(`${GET_GAME_DATA}?id=${id}`, {
-        cancelToken: cancelToken.token
+    const data = response.data;
+
+    if (data.success) {
+      const game = data.game;
+
+      setGame({
+        id: game.id,
+        categories: game.categoriesView,
+        description: game.description,
+        developer: game.developer,
+        launchDate: new Date(Date.parse(game.launchDate)),
+        name: game.name,
+        plataforms: game.plataformsView,
+        price: game.price,
+        publisher: game.publisher,
+        rating: game.rating,
+        requirements: game.requirements,
+        videos: game.videos
       });
+    } else {
+      showMessage(data.message, 'error');
 
-      const data = response.data;
-
-      if (data.success) {
-        const game = data.game;
-
-        setGame({
-          id: game.id,
-          categories: game.categoriesView,
-          description: game.description,
-          developer: game.developer,
-          launchDate: new Date(Date.parse(game.launchDate)),
-          name: game.name,
-          plataforms: game.plataformsView,
-          price: game.price,
-          publisher: game.publisher,
-          rating: game.rating,
-          requirements: game.requirements,
-          videos: game.videos
-        });
-      } else {
-        showMessage(data.message, 'error');
-
-        setError(true);
-      }
-    },
-    [cancelToken.token]
-  );
+      setError(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -79,17 +71,13 @@ export default function Game({
     }
   }, [dispatch, id]);
 
-  useEffect(() => () => cancelToken.cancel(), [cancelToken]);
-
   async function Checkout() {
     if (!user) {
       dispatch(push('/sign-in'));
       return;
     }
 
-    const response = await api.get(`${CHECKOUT}?gameId=${id}&uid=${user.uid}`, {
-      cancelToken: cancelToken.token
-    });
+    const response = await api.get(`${CHECKOUT}?gameId=${id}&uid=${user.uid}`);
 
     const data = response.data;
 

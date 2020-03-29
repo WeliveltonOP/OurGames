@@ -1,3 +1,6 @@
+* {
+ outline: none !important;
+}
 
 .menu-background{
     background-color:#222;
@@ -293,10 +296,16 @@ background-color: #107c10 !important;
   color: red !important;
 }
 
-.btn-buy-game{
-
-}
-
 main {
   background-color: #121212 !important;
+}
+
+.suport-form-container{
+  background-color: #333 !important;
+  border-radius: 6px !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.MuiPaper-rounded{
+  border-radius: 6px !important;
 }

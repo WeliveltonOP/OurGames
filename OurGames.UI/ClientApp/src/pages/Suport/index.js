@@ -73,13 +73,11 @@ export default function Suport() {
   return (
     <>
       <div className="card-container px-3">
-        <Paper square className="w-100 pt-3">
+        <Paper className="w-100 pt-3 suport-form-container">
           <ValidatorForm onSubmit={submitForm}>
             <div className="row px-3">
               <div className="col-sm-12 col-md-12 col-lg-6">
-                <Typography style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-                  Categoria:
-                </Typography>
+                <Typography color="textSecondary">Categoria:</Typography>
               </div>
             </div>
             <div className="row px-3">

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import OurLogo from '../../assets/images/logo-preto.png';
+import OurLogo from '../../assets/images/logo.png';
 import {
   FacebookLoginButton,
   GoogleLoginButton

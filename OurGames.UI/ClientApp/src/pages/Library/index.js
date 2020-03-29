@@ -9,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import {
   ListItemSecondaryAction,
   IconButton,
-  Tooltip
+  Tooltip,
+  Paper
 } from '@material-ui/core';
 import { VpnKey, SaveAlt } from '@material-ui/icons';
 
@@ -31,8 +32,8 @@ export default function Library() {
   const classes = useStyles();
 
   return (
-    <>
-      <div className="w-100 d-flex flex-column justify-content-center">
+    <div className="card-container px-3">
+      <Paper className="w-100 d-flex flex-column justify-content-center">
         <Typography
           className="align-self-center font-weight-bold"
           component="h1"
@@ -54,7 +55,14 @@ export default function Library() {
               secondary={
                 <>
                   <>
-                    {'Data da compra: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textSecondary"
+                    >
+                      Data da compra:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -65,7 +73,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Preço: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Preço:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -76,7 +91,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Plataforma: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Plataforma:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -110,7 +132,14 @@ export default function Library() {
               secondary={
                 <>
                   <>
-                    {'Data da compra: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textSecondary"
+                    >
+                      Data da compra:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -121,7 +150,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Preço: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Preço:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -132,7 +168,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Plataforma: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Plataforma:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -166,7 +209,14 @@ export default function Library() {
               secondary={
                 <>
                   <>
-                    {'Data da compra: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textSecondary"
+                    >
+                      Data da compra:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -177,7 +227,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Preço: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Preço:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -188,7 +245,14 @@ export default function Library() {
                     </Typography>
                   </>
                   <>
-                    {'Plataforma: '}
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline + ' ml-2'}
+                      color="textSecondary"
+                    >
+                      Plataforma:
+                    </Typography>
                     <Typography
                       component="span"
                       variant="body2"
@@ -210,7 +274,7 @@ export default function Library() {
             </ListItemSecondaryAction>
           </ListItem>
         </List>
-      </div>
-    </>
+      </Paper>
+    </div>
   );
 }
