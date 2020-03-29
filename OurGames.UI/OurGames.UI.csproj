@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\static\media\Beyond_Logo-960x384-a2c6b28b3e69ca323c30612098e1d5a9670053b-2054-413b-966b-1b926b56a9758.png" />
     <None Include="wwwroot\static\media\Beyond_PortraitPromo03-1280x1420-5c246b28fdc821c471257c69db3f5ddfd3640ea-5ce3-450c-8d08-4cea244215287.jpg" />
     <None Include="wwwroot\static\media\EGS_DavidOReilly_Everything_IC1_WhiteDropShadow-1802x705-42c0173386db45ca262f22df51684c0d1ab329f-edc3-42fe-8c18-faaa664779455.png" />
     <None Include="wwwroot\static\media\Everything_Portrait-1280x1440-b72cb823838a1b5127278ba2dc139b0c9164b7b-3e07-4e60-8f00-27edbea3e1e45.png" />
