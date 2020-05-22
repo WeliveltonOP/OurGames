@@ -2,18 +2,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace OurGames.Core.Model.Model
+namespace OurGames.Core.Model
 {
     public partial class Plataform
     {
         public Plataform()
         {
+            Order = new HashSet<Order>();
             PlataformGame = new HashSet<PlataformGame>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public virtual ICollection<Order> Order { get; set; }
         public virtual ICollection<PlataformGame> PlataformGame { get; set; }
     }
 }

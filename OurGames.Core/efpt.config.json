@@ -8,7 +8,7 @@
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Model",
-   "ProjectRootNamespace": "OurGames.Core.Model",
+   "ProjectRootNamespace": "OurGames.Core",
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
@@ -66,8 +66,10 @@
       }
    ],
    "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseInflector": false,
-   "UseLegacyPluralizer": false
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
 }

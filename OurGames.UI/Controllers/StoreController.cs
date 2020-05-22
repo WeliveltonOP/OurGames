@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OurGames.Common.Logging;
 using OurGames.Core.Entity;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using OurGames.Repository;
 using OurGames.UI.Models;
 using OurGames.UI.Services.Abstractions;
@@ -108,5 +108,25 @@ namespace OurGames.UI.Controllers
                 return Json(new { message = "Desculpe, não foi possível concluir esta ação!", success = false });
             }
         }
+
+        [HttpGet("[action]")]
+        public JsonResult SearchGames([FromQuery]string searchText)
+        {
+            try
+            {
+                var results = _gameRepo.SearchByName(searchText);
+                
+                var options = results.Select(r => new { label = r.Name, value = $"/game/{r.Id}" }).ToArray();
+
+                return Json(options);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error while searching items.", ex);
+
+                return Json(new { message = "Desculpe não foi possível pesquisar NCMs.", success = false });
+            }
+        }
+
     }
 }

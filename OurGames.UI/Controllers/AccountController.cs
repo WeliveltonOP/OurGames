@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OurGames.Common.Logging;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using OurGames.Repository;
 using OurGames.UI.Models;
 

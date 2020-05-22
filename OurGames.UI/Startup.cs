@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using OurGames.Core.Entity;
 using OurGames.UI.Services.Abstractions;

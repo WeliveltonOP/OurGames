@@ -26,3 +26,7 @@ export const SUPORT_EMAIL = '/store/suport';
 export const CHANGE_GAME_FAVORITE_STATUS = '/game/ChangeGameFavoriteStatus';
 
 export const GET_FAVORITE_GAME = '/game/GetFavoriteGames';
+
+export const GET_ORDERS = '/library/GetOrders';
+
+export const SEARCH_GAMES = '/store/SearchGames';

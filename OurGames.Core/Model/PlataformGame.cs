@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OurGames.Core.Model.Model
+namespace OurGames.Core.Model
 {
     public partial class PlataformGame
     {

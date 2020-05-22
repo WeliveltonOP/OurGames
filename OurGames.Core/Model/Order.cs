@@ -2,17 +2,20 @@
 using System;
 using System.Collections.Generic;
 
-namespace OurGames.Core.Model.Model
+namespace OurGames.Core.Model
 {
     public partial class Order
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public string GameKey { get; set; }
-        public int? GameId { get; set; }
-        public int? CustomerId { get; set; }
+        public int GameId { get; set; }
+        public int CustomerId { get; set; }
+        public decimal Value { get; set; }
+        public int PlataformId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Game Game { get; set; }
+        public virtual Plataform Plataform { get; set; }
     }
 }

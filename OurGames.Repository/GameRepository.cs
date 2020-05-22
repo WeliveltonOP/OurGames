@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,8 @@ namespace OurGames.Repository
 {
     public class GameRepository : AbstractRepository<Game>
     {
-        public GameRepository(DbContextOptions<OurGamesContext> dbContextOptions) : base(dbContextOptions)
+        public GameRepository(DbContextOptions<OurGamesContext> dbContextOptions) 
+            : base(dbContextOptions)
         {
         }
 
@@ -17,7 +19,7 @@ namespace OurGames.Repository
                 .Include(g => g.CategoryGame)
                 .Include(g => g.PlataformGame)
                     .ThenInclude(g => g.Plataform)
-
+                .OrderBy(g => g.Name)
                 .ToList();
         }
 
@@ -75,6 +77,15 @@ namespace OurGames.Repository
                         .Include(g => g.Media)
                         .Skip(skip).Take(take).ToList(),
                     context.Game.Count());
+        }
+
+        public IEnumerable<Game> SearchByName(string searchText)
+        {
+            return context.Game
+                .Include(g => g.CategoryGame)
+                    .ThenInclude(g => g.Category)
+                .Where(g => g.Name.Contains(searchText) || g.CategoryGame.Any(c => c.Category.Name.Contains(searchText)))
+                .ToList();
         }
     }
 }

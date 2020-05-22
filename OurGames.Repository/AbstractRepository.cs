@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using OurGames.Repository.Abstractions;
 using System;
 using System.Collections.Generic;

@@ -5,7 +5,7 @@ import {
   Button,
   LinearProgress,
   Snackbar,
-  Grow
+  Grow,
 } from '@material-ui/core';
 import Carousel from '../../components/Carousel';
 import { push } from 'connected-react-router';
@@ -17,7 +17,6 @@ import SnackbarContentWrapper from '../../components/SnackbarContentWrapper';
 import format from 'date-fns/format';
 import ptBr from 'date-fns/locale/pt-BR';
 import { Helmet } from 'react-helmet';
-import axios from 'axios';
 import { ArrowBackIos } from '@material-ui/icons';
 import { Fragment } from 'react';
 
@@ -25,16 +24,16 @@ const initialAlertMessageState = { message: '', variant: 'error', show: false };
 
 export default function Game({
   match: {
-    params: { id }
-  }
+    params: { id },
+  },
 }) {
   const dispatch = useDispatch();
   const [game, setGame] = useState(null);
   const [error, setError] = useState(false);
   const [alertMessage, setAlertMessage] = useState(initialAlertMessageState);
-  const { user } = useSelector(s => s.auth);
+  const { user } = useSelector((s) => s.auth);
 
-  const getAndSetGameData = useCallback(async id => {
+  const getAndSetGameData = useCallback(async (id) => {
     const response = await api.get(`${GET_GAME_DATA}?id=${id}`);
 
     const data = response.data;
@@ -54,7 +53,7 @@ export default function Game({
         publisher: game.publisher,
         rating: game.rating,
         requirements: game.requirements,
-        videos: game.videos
+        videos: game.videos,
       });
     } else {
       showMessage(data.message, 'error');
@@ -118,7 +117,9 @@ export default function Game({
 
           <Divider className="mb-2" />
 
-          <Carousel items={game.videos.map(v => ({ type: 'video', src: v }))} />
+          <Carousel
+            items={game.videos.map((v) => ({ type: 'video', src: v }))}
+          />
 
           <Divider className="my-4" />
 
@@ -179,7 +180,7 @@ export default function Game({
                   Plataformas
                 </Typography>
                 <Typography variant="caption" component="span">
-                  {game.plataforms.map(p => p.toUpperCase()).join('/')}
+                  {game.plataforms.map((p) => p.toUpperCase()).join('/')}
                 </Typography>
               </div>
               <div className="col-4 px-2">
@@ -196,13 +197,13 @@ export default function Game({
                 </Typography>
                 <Typography variant="caption" component="span">
                   {format(game.launchDate, "dd 'de' MMM 'de' yyyy", {
-                    locale: ptBr
+                    locale: ptBr,
                   })}
                 </Typography>
               </div>
             </div>
 
-            {game.plataforms.map(p => p.toLowerCase()).includes('pc') && (
+            {game.plataforms.map((p) => p.toLowerCase()).includes('pc') && (
               <div className="row justify-content-center mt-2 mb-5">
                 <div className="col-10 px-2">
                   <Typography variant="subtitle1" component="h4">
@@ -262,7 +263,7 @@ export default function Game({
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={alertMessage.show}
         autoHideDuration={3000}

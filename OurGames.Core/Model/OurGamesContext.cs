@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace OurGames.Core.Model.Model
+namespace OurGames.Core.Model
 {
     public partial class OurGamesContext : DbContext
     {
@@ -29,13 +29,6 @@ namespace OurGames.Core.Model.Model
         public virtual DbSet<PasswordRequest> PasswordRequest { get; set; }
         public virtual DbSet<Plataform> Plataform { get; set; }
         public virtual DbSet<PlataformGame> PlataformGame { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -227,15 +220,25 @@ namespace OurGames.Core.Model.Model
 
                 entity.Property(e => e.OrderDate).HasColumnType("datetime");
 
+                entity.Property(e => e.Value).HasColumnType("smallmoney");
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Order__CustomerI__1DB06A4F");
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.GameId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Order__GameId__1CBC4616");
+
+                entity.HasOne(d => d.Plataform)
+                    .WithMany(p => p.Order)
+                    .HasForeignKey(d => d.PlataformId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Order__Plataform__4D5F7D71");
             });
 
             modelBuilder.Entity<PasswordRequest>(entity =>

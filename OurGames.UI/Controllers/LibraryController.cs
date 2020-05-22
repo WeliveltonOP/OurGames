@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OurGames.Common.Logging;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using OurGames.Repository;
+using OurGames.UI.Models;
 
 namespace OurGames.UI.Controllers
 {
@@ -18,18 +20,30 @@ namespace OurGames.UI.Controllers
         }
 
         [HttpGet("[action]")]
-        public JsonResult GetUserOrders()
+        public JsonResult GetOrders(string uid)
         {
             try
             {
-                //TODO: get current user id
+                var orders = _orderRepo.GetByUserUid(uid);
 
-                //TEMP
-                var currentUserId = 10;
+                var viewOrders = new List<OrderModel>();
 
-                var orders = _orderRepo.GetBy(o => o.CustomerId == currentUserId);
+                foreach (var order in orders)
+                {                    
+                    viewOrders.Add(new OrderModel
+                    {
+                       Id = order.Id,
+                       GameId = order.GameId,
+                       GameKey = order.GameKey,
+                       Name = order.Game.Name,
+                       OrderDate = order.OrderDate,
+                       Value = order.Value,
+                       ThumbnailLink = order.Game.ThumbnailLink,
+                       Plataform = order.Plataform
+                    });
+                }
 
-                return Json(new { orders, success = true });
+                return Json(new { orders = viewOrders, success = true });
             }
             catch (Exception ex)
             {
@@ -37,6 +51,6 @@ namespace OurGames.UI.Controllers
 
                 return Json(new { message = "Desculpe, não foi possível carregar essa página.", success = false });
             }
-        }
+        }        
     }
 }

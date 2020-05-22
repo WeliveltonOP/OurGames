@@ -9,7 +9,7 @@ import {
   GET_GAMES,
   GET_CREATE_EDIT_PAGE_DEFAULT_STATE,
   CHANGE_GAME_FAVORITE_STATUS,
-  GET_FAVORITE_GAME
+  GET_FAVORITE_GAME,
 } from '../../constants/urls';
 import { Typography, LinearProgress, Grow, Snackbar } from '@material-ui/core';
 import SnackbarContentWrapper from '../../components/SnackbarContentWrapper';
@@ -18,8 +18,8 @@ const initialAlertMessageState = { message: '', variant: 'error', show: false };
 
 export default function Home({
   match: {
-    params: { plataform }
-  }
+    params: { plataform },
+  },
 }) {
   const [games, setGames] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -27,7 +27,8 @@ export default function Home({
   const [categories, setCategories] = useState([]);
   const [categorySelected, setCategorySelected] = useState(0);
   const [favoriteGames, setFavoriteGames] = useState([]);
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
+  const favoriteUpdate = useSelector((state) => state.game.favoriteUpdate);
   const dispactch = useDispatch();
 
   function handleMessageClose(_, reason) {
@@ -42,7 +43,7 @@ export default function Home({
   }
 
   const loadGames = useCallback(
-    async categoryId => {
+    async (categoryId) => {
       setLoaded(false);
 
       if (categoryId) {
@@ -75,8 +76,8 @@ export default function Home({
 
       if (data.success) {
         if (favoriteGamesData && favoriteGamesData.success) {
-          data.games = data.games.map(g => {
-            if (favoriteGamesData.games.some(f => f.GameId == g.id)) {
+          data.games = data.games.map((g) => {
+            if (favoriteGamesData.games.some((f) => f.GameId == g.id)) {
               g.isFavorite = true;
             } else {
               g.isFavorite = false;
@@ -97,10 +98,10 @@ export default function Home({
 
   useEffect(() => {
     loadGames(categorySelected !== 0 ? categorySelected : undefined);
-  }, [plataform, loadGames, categorySelected]);
+  }, [plataform, loadGames, categorySelected, favoriteUpdate]);
 
   useEffect(() => {
-    loadGames().catch(error => console.error(error));
+    loadGames().catch((error) => console.error(error));
 
     async function getCreateEditPageDefaultState() {
       const response = await api.get(GET_CREATE_EDIT_PAGE_DEFAULT_STATE);
@@ -129,7 +130,7 @@ export default function Home({
     const data = response.data;
 
     if (data.success) {
-      let game = games.find(g => g.id === id);
+      let game = games.find((g) => g.id === id);
 
       game.isFavorite = !game.isFavorite;
 
@@ -154,7 +155,7 @@ export default function Home({
           {games.length > 0 ? (
             <GamesList
               items={games}
-              onFavorite={id => onFavorite(id)}
+              onFavorite={(id) => onFavorite(id)}
               className="games-list"
             />
           ) : (
@@ -179,7 +180,7 @@ export default function Home({
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={alertMessage.show}
         autoHideDuration={3000}

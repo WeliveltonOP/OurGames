@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OurGames.Common.Logging;
-using OurGames.Core.Model.Model;
+using OurGames.Core.Model;
 using OurGames.Repository;
 using OurGames.UI.Models;
 using OurGames.UI.Extensions;
@@ -218,7 +218,7 @@ namespace OurGames.UI.Controllers
                 }
 
 
-                game.Active = model.Active;
+                //game.Active = model.Active;
 
                 game.CategoryGame = model.Categories.Select(c => new CategoryGame { CategoryId = c }).ToList();
 
