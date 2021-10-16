@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import configureStore from './store';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/css/app.css';
@@ -32,14 +32,14 @@ const firebaseAppAuth = firebaseApp.auth();
 
 const providers = {
   googleProvider: new firebase.auth.GoogleAuthProvider(),
-  facebookProvider: new firebase.auth.FacebookAuthProvider()
+  facebookProvider: new firebase.auth.FacebookAuthProvider(),
 };
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: { main: '#939ADB' },
-    type: takeIfExists('theme') || 'dark'
-  }
+    type: takeIfExists('theme') || 'dark',
+  },
 });
 
 function App(props) {
@@ -50,11 +50,7 @@ function App(props) {
       setLoaded(true);
 
       if (props.user) {
-        await addOrUpdateUser(
-          props.user.uid,
-          props.user.displayName,
-          props.user.email
-        );
+        await addOrUpdateUser(props.user.uid, props.user.displayName, props.user.email);
 
         const id = await getAccess(props.user.uid);
 
@@ -68,7 +64,7 @@ function App(props) {
     store.dispatch(
       setFirebaseOptions({
         ...props,
-        fauth: firebaseAppAuth
+        fauth: firebaseAppAuth,
       })
     );
 
@@ -133,7 +129,7 @@ function App(props) {
 
 export default withFirebaseAuth({
   providers,
-  firebaseAppAuth
+  firebaseAppAuth,
 })(App);
 
 export function isLoggedd() {

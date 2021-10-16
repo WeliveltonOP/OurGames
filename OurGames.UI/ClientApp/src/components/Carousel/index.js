@@ -16,7 +16,7 @@ export default function Carousel({ items }) {
         id: i + 1,
         isFirst: i === 0,
         isLast: i === items.length - 1,
-        ...e
+        ...e,
       });
     }
 
@@ -28,16 +28,15 @@ export default function Carousel({ items }) {
     setSlideImage({ in: false, direction: 'right' });
     // setTurnImage(true);
 
-    if (currentItem.isFirst)
-      setCurrentItem(itemsControl[itemsControl.length - 1]);
-    else setCurrentItem(itemsControl.find(e => e.id === currentItem.id - 1));
+    if (currentItem.isFirst) setCurrentItem(itemsControl[itemsControl.length - 1]);
+    else setCurrentItem(itemsControl.find((e) => e.id === currentItem.id - 1));
   }
 
   function handleNextClick() {
     setSlideImage({ in: false, direction: 'left' });
 
     if (currentItem.isLast) setCurrentItem(itemsControl[0]);
-    else setCurrentItem(itemsControl.find(e => e.id === currentItem.id + 1));
+    else setCurrentItem(itemsControl.find((e) => e.id === currentItem.id + 1));
   }
 
   useEffect(() => {
@@ -64,11 +63,11 @@ export default function Carousel({ items }) {
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 width="100%"
-                height="500"
+                height="935"
                 title="video"
               />
             ) : (
-              <img src={currentItem.src} alt="" />
+              <img src={currentItem.src} alt="" style={{ width: '100%', maxHeight: '935px', objectFit: 'contain' }} />
             ))}
         </div>
       </Slide>

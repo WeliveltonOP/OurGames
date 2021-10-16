@@ -41,7 +41,10 @@ namespace OurGames.Repository
 
         public IEnumerable<CustomerFavorite> GetFavoriteGames(string userProviderId)
         {
-            var customerId = context.Customer.FirstOrDefault(c => c.ProviderId == userProviderId).Id;
+            var customerId = context.Customer.FirstOrDefault(c => c.ProviderId == userProviderId)?.Id;
+
+            if (!customerId.HasValue)
+                return Enumerable.Empty<CustomerFavorite>();
 
             return context.CustomerFavorite
                             .Include(c => c.Game)

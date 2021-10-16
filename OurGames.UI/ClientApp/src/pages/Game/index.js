@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  Typography,
-  Divider,
-  Button,
-  LinearProgress,
-  Snackbar,
-  Grow,
-} from '@material-ui/core';
+import { Typography, Divider, Button, LinearProgress, Snackbar, Grow } from '@material-ui/core';
 import Carousel from '../../components/Carousel';
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -117,9 +110,7 @@ export default function Game({
 
           <Divider className="mb-2" />
 
-          <Carousel
-            items={game.videos.map((v) => ({ type: 'video', src: v }))}
-          />
+          <Carousel items={game.videos.map((v) => ({ type: v.includes('watch') ? 'video' : 'img', src: v }))} />
 
           <Divider className="my-4" />
 
@@ -222,21 +213,12 @@ export default function Game({
             )}
           </div>
 
-          <div
-            className="row justify-content-center position-sticky buy-game-container"
-            style={{ bottom: '10px' }}
-          >
+          <div className="row justify-content-center position-sticky buy-game-container" style={{ bottom: '10px' }}>
             <div className="col-12 justify-content-center d-flex align-items-center">
               <Typography variant="h6" component="h6" className="mr-2">
                 {formatRawValue(game.price, 'R$')}
               </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                onClick={Checkout}
-                className="btn-buy-game"
-              >
+              <Button variant="contained" color="primary" size="large" onClick={Checkout} className="btn-buy-game">
                 COMPRAR AGORA
               </Button>
             </div>
@@ -245,15 +227,8 @@ export default function Game({
       ) : (
         <div className="w-100 align-self-center">
           {error ? (
-            <Typography
-              className="empty-result"
-              component="h6"
-              variant="h4"
-              className="text-center"
-            >
-              {
-                'Está faltando algo por aqui, tente atualizar a página ou volte mais tarde :('
-              }
+            <Typography className="empty-result" component="h6" variant="h4" className="text-center">
+              {'Está faltando algo por aqui, tente atualizar a página ou volte mais tarde :('}
             </Typography>
           ) : (
             <LinearProgress />
@@ -270,11 +245,7 @@ export default function Game({
         onClose={handleMessageClose}
         TransitionComponent={Grow}
       >
-        <SnackbarContentWrapper
-          onClose={handleMessageClose}
-          variant={alertMessage.variant}
-          message={alertMessage.message}
-        />
+        <SnackbarContentWrapper onClose={handleMessageClose} variant={alertMessage.variant} message={alertMessage.message} />
       </Snackbar>
     </div>
   );

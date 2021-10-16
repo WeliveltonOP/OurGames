@@ -79,8 +79,10 @@ export default function Library() {
     setAlertMessage({ message, show: true, variant });
   }
 
-  function handleModalClose() {
-    setModalOpen(false);
+  function handleModalClose(event, reason) {
+    if (reason !== 'backdropClick') {
+      setModalOpen(false);
+    }
   }
 
   function handleModalOpen(e, key) {
@@ -94,11 +96,7 @@ export default function Library() {
   return (
     <div className="card-container px-3">
       <Paper className="w-100 d-flex flex-column justify-content-center">
-        <Typography
-          className="align-self-center font-weight-bold"
-          component="h1"
-          variant="h6"
-        >
+        <Typography className="align-self-center font-weight-bold" component="h1" variant="h6">
           Seus jogos
         </Typography>
         <Divider />
@@ -106,11 +104,7 @@ export default function Library() {
           {loaded && orders.length ? (
             orders.map((order) => (
               <Fragment key={order.id}>
-                <ListItem
-                  alignItems="flex-start"
-                  button
-                  onClick={() => dispatch(push(`/game/${order.gameId}`))}
-                >
+                <ListItem alignItems="flex-start" button onClick={() => dispatch(push(`/game/${order.gameId}`))}>
                   <ListItemAvatar
                     style={{
                       height: '100px',
@@ -118,11 +112,7 @@ export default function Library() {
                       overflow: 'hidden',
                     }}
                   >
-                    <img
-                      className="img-fluid"
-                      alt="Thumb"
-                      src={order.thumbnailLink}
-                    />
+                    <img className="img-fluid" alt="Thumb" src={order.thumbnailLink} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={order.Name}
@@ -130,24 +120,11 @@ export default function Library() {
                     secondary={
                       <>
                         <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline + ' mr-1'}
-                            color="textSecondary"
-                          >
+                          <Typography component="span" variant="body2" className={classes.inline + ' mr-1'} color="textSecondary">
                             Data da compra:
                           </Typography>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {format(
-                              new Date(Date.parse(order.orderDate)),
-                              'dd/MM/yyyy HH:mm:ss'
-                            )}
+                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                            {format(new Date(Date.parse(order.orderDate)), 'dd/MM/yyyy HH:mm:ss')}
                           </Typography>
                         </>
                         <>
@@ -159,16 +136,8 @@ export default function Library() {
                           >
                             Preço:
                           </Typography>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {formatRawValue(
-                              order.value.toString().replace(/\D+/g, ''),
-                              'R$'
-                            )}
+                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                            {formatRawValue(order.value.toString().replace(/\D+/g, ''), 'R$')}
                             {/* R$ 45,99 */}
                           </Typography>
                         </>
@@ -181,12 +150,7 @@ export default function Library() {
                           >
                             Plataforma:
                           </Typography>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
+                          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                             {order.plataform.name}
                           </Typography>
                         </>
@@ -207,11 +171,7 @@ export default function Library() {
                           <SaveAlt />
                         </IconButton>
                       ) : (
-                        <IconButton
-                          onClick={(e) => handleModalOpen(e, order.gameKey)}
-                          edge="end"
-                          aria-label="delete"
-                        >
+                        <IconButton onClick={(e) => handleModalOpen(e, order.gameKey)} edge="end" aria-label="delete">
                           <VpnKey />
                         </IconButton>
                       )}
@@ -225,12 +185,7 @@ export default function Library() {
             <LinearProgress />
           ) : (
             <div className="row w-100 justify-content-center">
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
+              <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
                 {'Você ainda não possui nenhum jogo! :('}
               </Typography>
             </div>
@@ -247,11 +202,7 @@ export default function Library() {
         onClose={handleMessageClose}
         TransitionComponent={Grow}
       >
-        <SnackbarContentWrapper
-          onClose={handleMessageClose}
-          variant={alertMessage.variant}
-          message={alertMessage.message}
-        />
+        <SnackbarContentWrapper onClose={handleMessageClose} variant={alertMessage.variant} message={alertMessage.message} />
       </Snackbar>
 
       <Modal
@@ -266,17 +217,11 @@ export default function Library() {
         BackdropProps={{
           timeout: 500,
         }}
-        disableBackdropClick={true}
       >
         <Zoom in={modalOpen}>
           <Paper className="p-3 mx-auto my-5 w-75">
             <div className="row justify-content-end">
-              <Typography
-                component="span"
-                variant="body2"
-                color="textSecondary"
-                className="d-flex align-items-center"
-              >
+              <Typography component="span" variant="body2" color="textSecondary" className="d-flex align-items-center">
                 {'copie a chave'}
               </Typography>
               <IconButton onClick={handleModalClose}>

@@ -32,11 +32,7 @@ import { Menu as MenuIcon, Close } from '@material-ui/icons';
 
 import { NavLink } from 'react-router-dom';
 import { connectTo } from '../../utils/redux';
-import {
-  GET_FAVORITE_GAME,
-  CHANGE_GAME_FAVORITE_STATUS,
-  SEARCH_GAMES,
-} from '../../constants/urls';
+import { GET_FAVORITE_GAME, CHANGE_GAME_FAVORITE_STATUS, SEARCH_GAMES } from '../../constants/urls';
 import { api } from '../../services';
 import SnackbarContentWrapper from '../SnackbarContentWrapper';
 import { setGameOptions } from '../../store/actions/game';
@@ -105,9 +101,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
   }
 
   async function loadFavoriteGames() {
-    const response = await api.get(
-      `${GET_FAVORITE_GAME}?userProviderId=${user.uid}`
-    );
+    const response = await api.get(`${GET_FAVORITE_GAME}?userProviderId=${user.uid}`);
 
     const data = response.data;
 
@@ -121,14 +115,14 @@ function Header({ user, signOut, isAdmin, isMaster }) {
     }
   }
 
-  function handleModalClose() {
-    setModalOpen(false);
+  function handleModalClose(event, reason) {
+    if (reason !== 'backdropClick') {
+      setModalOpen(false);
+    }
   }
 
   async function handleRemoveGame(e, gameId) {
-    const response = await api.get(
-      `${CHANGE_GAME_FAVORITE_STATUS}?gameId=${gameId}&userProviderId=${user.uid}`
-    );
+    const response = await api.get(`${CHANGE_GAME_FAVORITE_STATUS}?gameId=${gameId}&userProviderId=${user.uid}`);
 
     const data = response.data;
 
@@ -203,57 +197,32 @@ function Header({ user, signOut, isAdmin, isMaster }) {
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                exact
-                to="/"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" exact to="/">
                 Loja
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                to="/library"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" to="/library">
                 Biblioteca
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                to="/store/pc"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" to="/store/pc">
                 PC
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                to="/store/ps4"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" to="/store/ps4">
                 PS4
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                to="/store/xbox"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" to="/store/xbox">
                 Xbox
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
-                activeClassName="hvr-underline-active"
-                className="nav-link hvr-underline-from-left w-100"
-                to="/suport"
-              >
+              <NavLink activeClassName="hvr-underline-active" className="nav-link hvr-underline-from-left w-100" to="/suport">
                 Suporte
               </NavLink>
             </li>
@@ -318,11 +287,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
                 </IconButton>
               </>
             ) : (
-              <Button
-                onClick={() => dispatch(push('/sign-in'))}
-                variant="text"
-                style={{ color: '#f1f1f1' }}
-              >
+              <Button onClick={() => dispatch(push('/sign-in'))} variant="text" style={{ color: '#f1f1f1' }}>
                 LOGIN
               </Button>
             )}
@@ -357,17 +322,11 @@ function Header({ user, signOut, isAdmin, isMaster }) {
         BackdropProps={{
           timeout: 500,
         }}
-        disableBackdropClick={true}
       >
         <Zoom in={modalOpen}>
           <Paper className="p-3 mx-auto my-5 w-75">
             <div className="row justify-content-between">
-              <Typography
-                component="span"
-                variant="body2"
-                color="textSecondary"
-                className="pl-4 d-flex align-items-center"
-              >
+              <Typography component="span" variant="body2" color="textSecondary" className="pl-4 d-flex align-items-center">
                 {'Jogos favoritos'}
               </Typography>
               <IconButton onClick={handleModalClose}>
@@ -375,25 +334,15 @@ function Header({ user, signOut, isAdmin, isMaster }) {
               </IconButton>
             </div>
             {!loadedFavoriteGames && !favoriteGames ? (
-              <div
-                className="row d-flex justify-content-center align-items-center"
-                style={{ height: '500px' }}
-              >
+              <div className="row d-flex justify-content-center align-items-center" style={{ height: '500px' }}>
                 <CircularProgress />
               </div>
             ) : favoriteGames.length ? (
-              <div
-                style={{ height: '500px', overflowY: 'auto' }}
-                className="row"
-              >
+              <div style={{ height: '500px', overflowY: 'auto' }} className="row">
                 <List className="w-100">
                   {favoriteGames.map((favorite) => (
                     <Fragment key={favorite.Game.Id}>
-                      <ListItem
-                        alignItems="flex-start"
-                        button
-                        onClick={(e) => handleGameClick(e, favorite.Game.Id)}
-                      >
+                      <ListItem alignItems="flex-start" button onClick={(e) => handleGameClick(e, favorite.Game.Id)}>
                         <ListItemAvatar
                           style={{
                             height: '100px',
@@ -401,47 +350,25 @@ function Header({ user, signOut, isAdmin, isMaster }) {
                             overflow: 'hidden',
                           }}
                         >
-                          <img
-                            className="img-fluid"
-                            alt="Thumb"
-                            src={favorite.Game.ThumbnailLink}
-                          />
+                          <img className="img-fluid" alt="Thumb" src={favorite.Game.ThumbnailLink} />
                         </ListItemAvatar>
                         <ListItemText
                           primary={favorite.Game.Name}
                           className="ml-4"
                           secondary={
                             <>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                className="mr-1"
-                                color="textSecondary"
-                              >
+                              <Typography component="span" variant="body2" className="mr-1" color="textSecondary">
                                 Preço:
                               </Typography>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                              >
-                                {formatRawValue(
-                                  favorite.Game.Price.toString(),
-                                  'R$'
-                                )}
+                              <Typography component="span" variant="body2" color="textPrimary">
+                                {formatRawValue(favorite.Game.Price.toString(), 'R$')}
                               </Typography>
                             </>
                           }
                         />
                         <ListItemSecondaryAction className="mr-3">
                           <Tooltip title="Remover" placement="left">
-                            <IconButton
-                              onClick={(e) =>
-                                handleRemoveGame(e, favorite.Game.Id)
-                              }
-                              edge="end"
-                              aria-label="delete"
-                            >
+                            <IconButton onClick={(e) => handleRemoveGame(e, favorite.Game.Id)} edge="end" aria-label="delete">
                               <Close />
                             </IconButton>
                           </Tooltip>
@@ -453,16 +380,8 @@ function Header({ user, signOut, isAdmin, isMaster }) {
                 </List>
               </div>
             ) : (
-              <div
-                style={{ height: '500px' }}
-                className="row d-flex justify-content-center align-items-center"
-              >
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className="d-inline-block"
-                  color="textPrimary"
-                >
+              <div style={{ height: '500px' }} className="row d-flex justify-content-center align-items-center">
+                <Typography component="span" variant="body2" className="d-inline-block" color="textPrimary">
                   {message || 'Você não possui nenhum jogo favoritado! :('}
                 </Typography>
               </div>
@@ -480,11 +399,7 @@ function Header({ user, signOut, isAdmin, isMaster }) {
         onClose={handleMessageClose}
         TransitionComponent={Grow}
       >
-        <SnackbarContentWrapper
-          onClose={handleMessageClose}
-          variant={alertMessage.variant}
-          message={alertMessage.message}
-        />
+        <SnackbarContentWrapper onClose={handleMessageClose} variant={alertMessage.variant} message={alertMessage.message} />
       </Snackbar>
     </>
   );

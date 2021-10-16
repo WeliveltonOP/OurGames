@@ -27,21 +27,13 @@ import {
   ListItemText,
   Popover,
   ListItemSecondaryAction,
-  LinearProgress
+  LinearProgress,
 } from '@material-ui/core';
 
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import Locale from 'date-fns/locale/pt-BR';
-import {
-  GET_CREATE_EDIT_PAGE_DEFAULT_STATE,
-  CREATE_GAME,
-  EDIT_GAME,
-  GET_GAME_DATA
-} from '../../constants/urls';
+import { GET_CREATE_EDIT_PAGE_DEFAULT_STATE, CREATE_GAME, EDIT_GAME, GET_GAME_DATA } from '../../constants/urls';
 import SnackbarContentWrapper from '../../components/SnackbarContentWrapper';
 import { Add, Check, Close } from '@material-ui/icons';
 
@@ -59,7 +51,7 @@ const defaultGame = {
   rating: '',
   videos: [],
   thumbnail: null,
-  backgroundImage: null
+  backgroundImage: null,
 };
 
 const initialAlertMessageState = { message: '', variant: 'error', show: false };
@@ -67,8 +59,8 @@ const initialAlertMessageState = { message: '', variant: 'error', show: false };
 export default function CreateAndEditGame({
   match: {
     params: { id },
-    url
-  }
+    url,
+  },
 }) {
   const [game, setGame] = useState(defaultGame);
 
@@ -128,12 +120,12 @@ export default function CreateAndEditGame({
   }, [game.description]);
 
   useEffect(() => {
-    setRequirementsHelperText(`${game.requirements.length}/500`);
+    setRequirementsHelperText(`${game.requirements ? game.requirements.length : 0}/500`);
   }, [game.requirements]);
 
   useEffect(() => {
     if (plataformOptions.length > 0 && game.plataformId === 0) {
-      setGame(g => ({ ...g, plataformId: plataformOptions[0].value }));
+      setGame((g) => ({ ...g, plataformId: plataformOptions[0].value }));
     }
   }, [plataformOptions]);
 
@@ -142,9 +134,9 @@ export default function CreateAndEditGame({
       for (let i = 0; i < game.plataforms.length; i++) {
         const plataformId = game.plataforms[i];
 
-        const plataform = plataformOptions.find(p => p.value === plataformId);
+        const plataform = plataformOptions.find((p) => p.value === plataformId);
 
-        if (plataform.label.toLowerCase() === 'pc') {
+        if (plataform.label.toLowerCase() === 'pc' || plataform.label.toLowerCase() === 'multiplataforma') {
           setShowRequirementsField(true);
         } else {
           setShowRequirementsField(false);
@@ -181,7 +173,7 @@ export default function CreateAndEditGame({
             publisher: game.publisher,
             rating: game.rating,
             requirements: game.requirements,
-            videos: game.videos
+            videos: game.videos,
           });
 
           setThumbFilePreview(game.thumbnailLink);
@@ -271,12 +263,10 @@ export default function CreateAndEditGame({
     <Paper
       className="w-100 my-4 p-4 h-100 mx-3"
       style={{
-        flex: 1
+        flex: 1,
       }}
     >
-      {(loaded || isCreate) &&
-      plataformOptions.length > 0 &&
-      categoryOptions.length > 0 ? (
+      {(loaded || isCreate) && plataformOptions.length > 0 && categoryOptions.length > 0 ? (
         <ValidatorForm onSubmit={submitForm}>
           <div className="row justify-content-center mb-5">
             <Typography variant="h6" component="h6">
@@ -291,7 +281,7 @@ export default function CreateAndEditGame({
                 className="w-100"
                 label="Nome do jogo"
                 value={game.name}
-                onChange={e => setGame({ ...game, name: e.target.value })}
+                onChange={(e) => setGame({ ...game, name: e.target.value })}
               />
             </div>
             <div className="col-sm-12 col-md-12 col-lg-4 mb-3">
@@ -305,9 +295,9 @@ export default function CreateAndEditGame({
                   className="w-100 my-0"
                   label="Data de lançamento"
                   value={game.launchDate}
-                  onChange={date => setGame({ ...game, launchDate: date })}
+                  onChange={(date) => setGame({ ...game, launchDate: date })}
                   KeyboardButtonProps={{
-                    'aria-label': 'Mudar data'
+                    'aria-label': 'Mudar data',
                   }}
                 />
               </MuiPickersUtilsProvider>
@@ -319,9 +309,7 @@ export default function CreateAndEditGame({
                 className="w-100"
                 label="Preço"
                 InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
-                  )
+                  startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                 }}
                 // unit="R$"
                 value={game.price || 0}
@@ -339,7 +327,7 @@ export default function CreateAndEditGame({
                 name="developer"
                 className="w-100"
                 label="Desenvolvedor"
-                onChange={e => setGame({ ...game, developer: e.target.value })}
+                onChange={(e) => setGame({ ...game, developer: e.target.value })}
                 value={game.developer}
               />
             </div>
@@ -349,7 +337,7 @@ export default function CreateAndEditGame({
                 name="publisher"
                 className="w-100"
                 label="Publicador"
-                onChange={e => setGame({ ...game, publisher: e.target.value })}
+                onChange={(e) => setGame({ ...game, publisher: e.target.value })}
                 value={game.publisher}
               />
             </div>
@@ -361,20 +349,12 @@ export default function CreateAndEditGame({
                   id="plataforms"
                   multiple
                   value={game.plataforms}
-                  onChange={e =>
-                    setGame({ ...game, plataforms: e.target.value })
-                  }
+                  onChange={(e) => setGame({ ...game, plataforms: e.target.value })}
                   input={<Input id="select-multiple-plataforms" />}
-                  renderValue={selected => (
+                  renderValue={(selected) => (
                     <div className="d-flex flex-wrap">
-                      {selected.map(value => (
-                        <Chip
-                          key={value}
-                          label={
-                            plataformOptions.find(c => c.value === value).label
-                          }
-                          className="m-2"
-                        />
+                      {selected.map((value) => (
+                        <Chip key={value} label={plataformOptions.find((c) => c.value === value).label} className="m-2" />
                       ))}
                     </div>
                   )}
@@ -397,20 +377,12 @@ export default function CreateAndEditGame({
                   id="category"
                   multiple
                   value={game.categories}
-                  onChange={e =>
-                    setGame({ ...game, categories: e.target.value })
-                  }
+                  onChange={(e) => setGame({ ...game, categories: e.target.value })}
                   input={<Input id="select-multiple-category" />}
-                  renderValue={selected => (
+                  renderValue={(selected) => (
                     <div className="d-flex flex-wrap">
-                      {selected.map(value => (
-                        <Chip
-                          key={value}
-                          label={
-                            categoryOptions.find(c => c.value === value).label
-                          }
-                          className="m-2"
-                        />
+                      {selected.map((value) => (
+                        <Chip key={value} label={categoryOptions.find((c) => c.value === value).label} className="m-2" />
                       ))}
                     </div>
                   )}
@@ -430,7 +402,7 @@ export default function CreateAndEditGame({
                 className="w-100"
                 label="Classificação"
                 value={game.rating}
-                onChange={e => setGame({ ...game, rating: e.target.value })}
+                onChange={(e) => setGame({ ...game, rating: e.target.value })}
               />
             </div>
           </div>
@@ -442,17 +414,12 @@ export default function CreateAndEditGame({
                 className="w-100"
                 label="Descrição"
                 value={game.description}
-                onChange={e =>
+                onChange={(e) =>
                   e.target.value.length <= 500
                     ? setGame({ ...game, description: e.target.value })
                     : setGame({
                         ...game,
-                        description:
-                          game.description +
-                          e.target.value.substring(
-                            0,
-                            500 - game.description.length
-                          )
+                        description: game.description + e.target.value.substring(0, 500 - game.description.length),
                       })
                 }
                 // rowsMax={10}
@@ -470,17 +437,12 @@ export default function CreateAndEditGame({
                   className="w-100"
                   label="Requisitos"
                   value={game.requirements}
-                  onChange={e =>
+                  onChange={(e) =>
                     e.target.value.length <= 500
                       ? setGame({ ...game, requirements: e.target.value })
                       : setGame({
                           ...game,
-                          requirements:
-                            game.requirements +
-                            e.target.value.substring(
-                              0,
-                              500 - game.requirements.length
-                            )
+                          requirements: game.requirements + e.target.value.substring(0, 500 - game.requirements.length),
                         })
                   }
                   // rowsMax={10}
@@ -492,113 +454,47 @@ export default function CreateAndEditGame({
           </Collapse>
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12 mb-3">
-              <Typography
-                className="font-weight-bold"
-                variant="body1"
-                component="p"
-              >
+              <Typography className="font-weight-bold" variant="body1" component="p">
                 Mídias
               </Typography>
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-3 mb-3">
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                component="strong"
-              >
+              <Typography variant="subtitle1" color="textSecondary" component="strong">
                 Capa do jogo
               </Typography>
-              <input
-                hidden
-                type="file"
-                id="bg-file"
-                onChange={e =>
-                  setGame({ ...game, backgroundImage: e.target.files[0] })
-                }
-              />
-              <Tooltip
-                title="Adicionar imagem"
-                placement="bottom"
-                color="textSecondary"
-              >
+              <input hidden type="file" id="bg-file" onChange={(e) => setGame({ ...game, backgroundImage: e.target.files[0] })} />
+              <Tooltip title="Adicionar imagem" placement="bottom" color="textSecondary">
                 <span>
-                  <IconButton onClick={e => performeClick('bg-file')}>
-                    {game.backgroundImage !== null ? (
-                      <Check color="primary" />
-                    ) : (
-                      <Add />
-                    )}
+                  <IconButton onClick={(e) => performeClick('bg-file')}>
+                    {game.backgroundImage !== null ? <Check color="primary" /> : <Add />}
                   </IconButton>
                 </span>
               </Tooltip>
-              <div>
-                {bgFilePreview && (
-                  <img
-                    width="200px"
-                    className="img-fluid"
-                    src={bgFilePreview}
-                    alt="bg-preview"
-                  />
-                )}
-              </div>
+              <div>{bgFilePreview && <img width="200px" className="img-fluid" src={bgFilePreview} alt="bg-preview" />}</div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-3 mb-3">
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                component="strong"
-              >
+              <Typography variant="subtitle1" color="textSecondary" component="strong">
                 Logo
               </Typography>
-              <input
-                hidden
-                type="file"
-                id="thumb-file"
-                onChange={e =>
-                  setGame({ ...game, thumbnail: e.target.files[0] })
-                }
-              />
-              <Tooltip
-                title="Adicionar imagem"
-                placement="bottom"
-                color="textSecondary"
-              >
+              <input hidden type="file" id="thumb-file" onChange={(e) => setGame({ ...game, thumbnail: e.target.files[0] })} />
+              <Tooltip title="Adicionar imagem" placement="bottom" color="textSecondary">
                 <span>
                   <IconButton onClick={() => performeClick('thumb-file')}>
-                    {game.thumbnail !== null ? (
-                      <Check color="primary" />
-                    ) : (
-                      <Add />
-                    )}
+                    {game.thumbnail !== null ? <Check color="primary" /> : <Add />}
                   </IconButton>
                 </span>
               </Tooltip>
               <div>
-                {thumbFilePreview && (
-                  <img
-                    width="200px"
-                    className="img-fluid"
-                    src={thumbFilePreview}
-                    alt="thumbnail-preview"
-                  />
-                )}
+                {thumbFilePreview && <img width="200px" className="img-fluid" src={thumbFilePreview} alt="thumbnail-preview" />}
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-6 mb-3">
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                component="strong"
-              >
-                Vídeos do youtube
+              <Typography variant="subtitle1" color="textSecondary" component="strong">
+                Vídeos do youtube e imagens
               </Typography>
-              <Tooltip
-                title="Adicionar link"
-                placement="bottom"
-                color="textSecondary"
-              >
+              <Tooltip title="Adicionar link" placement="bottom" color="textSecondary">
                 <span>
                   <IconButton onClick={handlePopoverOpen}>
                     <Add />
@@ -647,14 +543,14 @@ export default function CreateAndEditGame({
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'center'
+          horizontal: 'center',
         }}
         transformOrigin={{
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         }}
         PaperProps={{
-          style: { minWidth: '40%' }
+          style: { minWidth: '40%' },
         }}
       >
         <div className="m-3 d-flex flex-column">
@@ -663,7 +559,7 @@ export default function CreateAndEditGame({
           </Typography>
           <TextField
             value={currentLinkVideo}
-            onChange={e => setCurrentLinkVideo(e.target.value)}
+            onChange={(e) => setCurrentLinkVideo(e.target.value)}
             className="mb-3"
             label="Link"
             id="videoLink"
@@ -680,18 +576,14 @@ export default function CreateAndEditGame({
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         open={alertMessage.show}
         autoHideDuration={3000}
         onClose={handleMessageClose}
         TransitionComponent={Grow}
       >
-        <SnackbarContentWrapper
-          onClose={handleMessageClose}
-          variant={alertMessage.variant}
-          message={alertMessage.message}
-        />
+        <SnackbarContentWrapper onClose={handleMessageClose} variant={alertMessage.variant} message={alertMessage.message} />
       </Snackbar>
     </Paper>
   );
